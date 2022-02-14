@@ -5,33 +5,32 @@ date: "11/18/2021"
 output: html_document
 dataset:
   citation:
-      title: "Social Data Commons: your title here"
+      title: "Social Data Commons: Population Characteristics: ACS Demographics"
       subtitle: ""
-      dsDescriptionValue: "Virginia Standards of Learning Test Scores collected by the Virginia Department of Education (VDOE)"
+      dsDescriptionValue: "ACS Demographics with Margin of Errors"
       subject: "Social Sciences (Ex: Education, Politics, Sociology, Economics, Psychology)"
-      productionDate: "2021-11-17"
-      timePeriodCoveredStart: "2015-01-01"
-      timePeriodCoveredEnd: "2021-01-01"
+      productionDate: "2022-2-14"
+      timePeriodCoveredStart: "2009-01-01"
+      timePeriodCoveredEnd: "2019-12-31"
       dataSources:
         - "ACS"
-        - "County Health Rankings"
       author:
+        - authorName: "Alerte, Zachary"
+          authorAffiliation: "Univeristy of Virginia"
         - authorName: "Schroeder, Aaron"
           authorAffiliation: "Univeristy of Virginia"
-        - authorName: "Charankevich, Hanna"
-          authorAffiliation: "Univeristy of Virginia"
-        - authorName: "Niagra, Bob"
-          authorAffiliation: "Univeristy of Waterloo"
       datasetContact:
         - datasetContactEmail: "ads7fg@virginia.edu"
           datasetContactName: "Schroeder, Aaron"
   geospatial:
     geographicCoverage:
       country: "United States"
-      state: "Virginia"
+      state: "Virginia, Maryland, D.C."
     geographicUnit:
       - "State Health District"
       - "County"
+      - "Census Tract"
+      - "Block Group"
 ---
 
 ```{r setup, include=FALSE}
