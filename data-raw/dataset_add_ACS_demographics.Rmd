@@ -17,7 +17,7 @@ dataset_doi <- readLines(here::here("data/dataset_doi"))[1]
 
 ## Code you used to create dataset - LIST BELOW
 
-Ex: dc_common.dcmdva_bg_acs_2013_2019_demographics_update, dc_common.dcmdva_tr_acs_2009_2019_demographics_update, dc_common.dcmdva_ct_acs_2009_2019_demographics_update, dc_common.va_hd_acs_2009_2019_demographics_update: demographics_bgtrcthd.RMD
+dc_common.dcmdva_bg_acs_2013_2019_demographics_update, dc_common.dcmdva_tr_acs_2009_2019_demographics_update, dc_common.dcmdva_ct_acs_2009_2019_demographics_update, dc_common.va_hd_acs_2009_2019_demographics_update: demographics_bgtrcthd.RMD
 
 
 ```{r data}

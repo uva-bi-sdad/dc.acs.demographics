@@ -3,9 +3,10 @@ title: "demographics_bgtrcthd"
 output: html_document
 ---
 
-FOR MOE calculations:
+For information on MOE calculations:
 https://www.census.gov/content/dam/Census/library/publications/2020/acs/acs_general_handbook_2020_ch08.pdf
 
+# load packages
 
 ```{r}
 library(sf)
@@ -24,8 +25,10 @@ library(readxl)
 library(units)
 ```
 
+# read in ACS variables
 
 ```{r}
+# gets race, age, etc data
 acs_vars <- function(year, geography)
 {
         if (year > 2015)
@@ -68,7 +71,7 @@ acs_vars <- function(year, geography)
                         state = c("VA", "MD", "DC"),
                         survey = "acs5",
                         output = "wide",
-                        geometry = T)
+                        geometry = TRUE) # need for density calculation
         }
         else
         {
@@ -108,11 +111,12 @@ acs_vars <- function(year, geography)
                 state = c("VA", "MD", "DC"),
                 survey = "acs5",
                 output = "wide",
-                geometry = T)
+                geometry = TRUE) # need for density calculation
         }
         return(dcmdva.ct.demographics)
 }
 
+# counties
 dcmdva.ct.demographics.2019 <- acs_vars(2019, "county") %>% mutate(year = 2019)
 dcmdva.ct.demographics.2018 <- acs_vars(2018, "county") %>% mutate(year = 2018)
 dcmdva.ct.demographics.2017 <- acs_vars(2017, "county") %>% mutate(year = 2017)
@@ -125,6 +129,7 @@ dcmdva.ct.demographics.2011 <- acs_vars(2011, "county") %>% mutate(year = 2011)
 dcmdva.ct.demographics.2010 <- acs_vars(2010, "county") %>% mutate(year = 2010)
 dcmdva.ct.demographics.2009 <- acs_vars(2009, "county") %>% mutate(year = 2009)
 
+# tracts
 dcmdva.tr.demographics.2019 <- acs_vars(2019, "tract") %>% mutate(year = 2019)
 dcmdva.tr.demographics.2018 <- acs_vars(2018, "tract") %>% mutate(year = 2018)
 dcmdva.tr.demographics.2017 <- acs_vars(2017, "tract") %>% mutate(year = 2017)
@@ -137,6 +142,7 @@ dcmdva.tr.demographics.2011 <- acs_vars(2011, "tract") %>% mutate(year = 2011)
 dcmdva.tr.demographics.2010 <- acs_vars(2010, "tract") %>% mutate(year = 2010)
 dcmdva.tr.demographics.2009 <- acs_vars(2009, "tract") %>% mutate(year = 2009)
 
+# block groups
 dcmdva.bg.demographics.2019 <- acs_vars(2019, "block group") %>% mutate(year = 2019)
 dcmdva.bg.demographics.2018 <- acs_vars(2018, "block group") %>% mutate(year = 2018)
 dcmdva.bg.demographics.2017 <- acs_vars(2017, "block group") %>% mutate(year = 2017)
@@ -144,6 +150,8 @@ dcmdva.bg.demographics.2016 <- acs_vars(2016, "block group") %>% mutate(year = 2
 dcmdva.bg.demographics.2015 <- acs_vars(2015, "block group") %>% mutate(year = 2015)
 dcmdva.bg.demographics.2014 <- acs_vars(2014, "block group") %>% mutate(year = 2014)
 dcmdva.bg.demographics.2013 <- acs_vars(2013, "block group") %>% mutate(year = 2013)
+
+### No Block Group measurements from 2012-2009
 # dcmdva.bg.demographics.2012 <- acs_vars(2012, "block group") %>% mutate(year = 2012) # no bg data for 2012 - 2009
 # dcmdva.bg.demographics.2011 <- acs_vars(2011, "block group") %>% mutate(year = 2011)
 # dcmdva.bg.demographics.2010 <- acs_vars(2010, "block group") %>% mutate(year = 2010)
@@ -155,6 +163,7 @@ dcmdva.bg.demographics.2013 <- acs_vars(2013, "block group") %>% mutate(year = 2
 # County level - figure out NAs!!!
 
 ```{r}
+# split into a and b because of the different columns across the years (more variables b/w 2019-2016)
 dcmdva.ct.demo.a <- rbind(dcmdva.ct.demographics.2019, dcmdva.ct.demographics.2018,
                           dcmdva.ct.demographics.2017, dcmdva.ct.demographics.2016)
 dcmdva.ct.demo.a$density <- dcmdva.ct.demo.a$pop_totE / (dcmdva.ct.demo.a %>% st_area() %>% set_units(mi^2))
@@ -608,6 +617,7 @@ dcmdva.bg.demo.final <- rbind(dcmdva.bg.demo.a.2, dcmdva.bg.demo.b.2)
 ncr.bg.demo.final <- dcmdva.bg.demo.final[substr(dcmdva.bg.demo.final$geoid, 1, 5) %in% c("51013", "51059", "51107", "51510", "51600", "51153", "51683", "51685", "51610", "11001", "24031", "24033", "24017", "24021"),]
 ```
 
+# subset for NCR and send county, tract, and block group data to database
 
 ```{r}
 dcmdva.ct.demo.final[grepl("perc", dcmdva.ct.demo.final$measure),]$value <- 100 * dcmdva.ct.demo.final[grepl("perc", dcmdva.ct.demo.final$measure),]$value
@@ -617,20 +627,20 @@ ncr.tr.demo.final[grepl("perc", ncr.tr.demo.final$measure),]$value <- 100 * ncr.
 dcmdva.bg.demo.final[grepl("perc", dcmdva.bg.demo.final$measure),]$value <- 100 * dcmdva.bg.demo.final[grepl("perc", dcmdva.bg.demo.final$measure),]$value
 ncr.bg.demo.final[grepl("perc", ncr.bg.demo.final$measure),]$value <- 100 * ncr.bg.demo.final[grepl("perc", ncr.bg.demo.final$measure),]$value
 
-source("~/git/VDH/src/helper_functions.R")
-con <- get_db_conn(db_pass = "rsu8zvrsu8zv")
-dc_dbWriteTable(con, "dc_common", "dcmdva_ct_acs_2009_2019_demographics_update", dcmdva.ct.demo.final)
-dc_dbWriteTable(con, "dc_common", "ncr_ct_acs_2009_2019_demographics_update", ncr.ct.demo.final)
-dc_dbWriteTable(con, "dc_common", "dcmdva_tr_acs_2009_2019_demographics_update", dcmdva.tr.demo.final)
-dc_dbWriteTable(con, "dc_common", "ncr_tr_acs_2009_2019_demographics_update", ncr.tr.demo.final)
-dc_dbWriteTable(con, "dc_common", "dcmdva_bg_acs_2013_2019_demographics_update", dcmdva.bg.demo.final)
-dc_dbWriteTable(con, "dc_common", "ncr_bg_acs_2013_2019_demographics_update", ncr.bg.demo.final)
-dbDisconnect(con)
-
-unique(dcmdva.tr.demo.final$measure)
+# send to database
+# source("~/git/VDH/src/helper_functions.R")
+# con <- get_db_conn(db_pass = "rsu8zvrsu8zv")
+# dc_dbWriteTable(con, "dc_common", "dcmdva_ct_acs_2009_2019_demographics_update", dcmdva.ct.demo.final)
+# dc_dbWriteTable(con, "dc_common", "ncr_ct_acs_2009_2019_demographics_update", ncr.ct.demo.final)
+# dc_dbWriteTable(con, "dc_common", "dcmdva_tr_acs_2009_2019_demographics_update", dcmdva.tr.demo.final)
+# dc_dbWriteTable(con, "dc_common", "ncr_tr_acs_2009_2019_demographics_update", ncr.tr.demo.final)
+# dc_dbWriteTable(con, "dc_common", "dcmdva_bg_acs_2013_2019_demographics_update", dcmdva.bg.demo.final)
+# dc_dbWriteTable(con, "dc_common", "ncr_bg_acs_2013_2019_demographics_update", ncr.bg.demo.final)
+# dbDisconnect(con)
 ```
 
 # get demographic data at the health district level
+
 ```{r}
 acs_vars.hd <- function(year, geography)
 {
@@ -735,7 +745,7 @@ health_district <- read.csv("/project/biocomplexity/sdad/projects_data/vdh/va_co
 health_district$county_id <- as.character(health_district$county_id)
 
 con <- get_db_conn(db_pass = "rsu8zvrsu8zv")
-health_district_geoids <- st_read(con, query = "SELECT * FROM dc_common.va_hd_sdad_2021_virginia_health_district_geoids")
+health_district_geoids <- st_read(con, query = "SELECT * FROM dc_geographies.va_hd_vdh_2021_health_district_geo_names")
 dbDisconnect(con)
 
 health_district_2 <- left_join(health_district, health_district_geoids, by = c("health_district" = "region_name"))
@@ -918,14 +928,14 @@ va.hd.demo.b <- merge(va.ct.demo.b, health_district_2[, c("county_id", "health_d
         drop_na(value)
 
 va.hd.demo <- rbind(va.hd.demo.a, va.hd.demo.b)
-va.hd.demo
 ```
 
+# send to database
 
 ```{r}
-con <- get_db_conn(db_pass = "rsu8zvrsu8zv")
-dc_dbWriteTable(con, "dc_common", "va_hd_acs_2009_2019_demographics_update", va.hd.demo)
-dbDisconnect(con)
+# con <- get_db_conn(db_pass = "rsu8zvrsu8zv")
+# dc_dbWriteTable(con, "dc_common", "va_hd_acs_2009_2019_demographics_update", va.hd.demo)
+# dbDisconnect(con)
 ```
 
 
