@@ -17,14 +17,13 @@ dataset_doi <- readLines(here::here("data/dataset_doi"))[1]
 
 ## Code you used to create dataset - LIST BELOW
 
-dc_common.dcmdva_bg_acs_2013_2019_demographics_update, dc_common.dcmdva_tr_acs_2009_2019_demographics_update, dc_common.dcmdva_ct_acs_2009_2019_demographics_update, dc_common.va_hd_acs_2009_2019_demographics_update: demographics_bgtrcthd.RMD
+dc_common.dcmdva_tr_acs_2009_2019_demographics_update, dc_common.dcmdva_ct_acs_2009_2019_demographics_update, dc_common.va_hd_acs_2009_2019_demographics_update: demographics_bgtrcthd.RMD
 
 
 ```{r data}
 
 # Ex database_table_name: "va_hd_vdoe_2019_2021_3rd_grade_mean_median_read_score"
-table_names = c("dcmdva_bg_acs_2013_2019_demographics_update",
-                "dcmdva_tr_acs_2009_2019_demographics_update",
+table_names = c("dcmdva_tr_acs_2009_2019_demographics_update",
                 "dcmdva_ct_acs_2009_2019_demographics_update",
                 "va_hd_acs_2009_2019_demographics_update")
     
@@ -47,7 +46,8 @@ if (length(table_names) > 1)
 
 DBI::dbDisconnect(con)
 
-all_geos_file_name <- "dcmdva_hdcttrbg_2009_2019_acs_demographics"  #Ex: "va_vdoe_2019_2021_3rd_grade_mean_median_read_score"
+all_geos_dat <- all_geos_dat[substr(all_geos_dat$geoid, 1, 2) == "51",]
+all_geos_file_name <- "va_hdcttr_2009_2019_acs_demographics"  #Ex: "va_vdoe_2019_2021_3rd_grade_mean_median_read_score"
 assign(all_geos_file_name, all_geos_dat)
 ```
 
