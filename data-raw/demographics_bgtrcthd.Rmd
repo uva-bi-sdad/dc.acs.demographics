@@ -23,6 +23,7 @@ library(dplyr)
 library(tidygeocoder)
 library(readxl)
 library(units)
+library(DBI)
 ```
 
 # read in ACS variables
@@ -160,7 +161,7 @@ dcmdva.bg.demographics.2013 <- acs_vars(2013, "block group") %>% mutate(year = 2
 
 ```
 
-# County level - figure out NAs!!!
+# County level - might be some NAs that need handling
 
 ```{r}
 # split into a and b because of the different columns across the years (more variables b/w 2019-2016)
@@ -620,6 +621,7 @@ ncr.bg.demo.final <- dcmdva.bg.demo.final[substr(dcmdva.bg.demo.final$geoid, 1, 
 # subset for NCR and send county, tract, and block group data to database
 
 ```{r}
+# convert to 0-100 scale
 dcmdva.ct.demo.final[grepl("perc", dcmdva.ct.demo.final$measure),]$value <- 100 * dcmdva.ct.demo.final[grepl("perc", dcmdva.ct.demo.final$measure),]$value
 ncr.ct.demo.final[grepl("perc", ncr.ct.demo.final$measure),]$value <- 100 * ncr.ct.demo.final[grepl("perc", ncr.ct.demo.final$measure),]$value
 dcmdva.tr.demo.final[grepl("perc", dcmdva.tr.demo.final$measure),]$value <- 100 * dcmdva.tr.demo.final[grepl("perc", dcmdva.tr.demo.final$measure),]$value
@@ -628,18 +630,18 @@ dcmdva.bg.demo.final[grepl("perc", dcmdva.bg.demo.final$measure),]$value <- 100 
 ncr.bg.demo.final[grepl("perc", ncr.bg.demo.final$measure),]$value <- 100 * ncr.bg.demo.final[grepl("perc", ncr.bg.demo.final$measure),]$value
 
 # send to database
-# source("~/git/VDH/src/helper_functions.R")
-# con <- get_db_conn(db_pass = "rsu8zvrsu8zv")
-# dc_dbWriteTable(con, "dc_common", "dcmdva_ct_acs_2009_2019_demographics_update", dcmdva.ct.demo.final)
-# dc_dbWriteTable(con, "dc_common", "ncr_ct_acs_2009_2019_demographics_update", ncr.ct.demo.final)
-# dc_dbWriteTable(con, "dc_common", "dcmdva_tr_acs_2009_2019_demographics_update", dcmdva.tr.demo.final)
-# dc_dbWriteTable(con, "dc_common", "ncr_tr_acs_2009_2019_demographics_update", ncr.tr.demo.final)
-# dc_dbWriteTable(con, "dc_common", "dcmdva_bg_acs_2013_2019_demographics_update", dcmdva.bg.demo.final)
-# dc_dbWriteTable(con, "dc_common", "ncr_bg_acs_2013_2019_demographics_update", ncr.bg.demo.final)
-# dbDisconnect(con)
+source("~/git/VDH/src/helper_functions.R")
+con <- get_db_conn(db_pass = "rsu8zvrsu8zv")
+dc_dbWriteTable(con, "dc_common", "dcmdva_ct_acs_2009_2019_demographics_update", dcmdva.ct.demo.final)
+dc_dbWriteTable(con, "dc_common", "ncr_ct_acs_2009_2019_demographics_update", ncr.ct.demo.final)
+dc_dbWriteTable(con, "dc_common", "dcmdva_tr_acs_2009_2019_demographics_update", dcmdva.tr.demo.final)
+dc_dbWriteTable(con, "dc_common", "ncr_tr_acs_2009_2019_demographics_update", ncr.tr.demo.final)
+dc_dbWriteTable(con, "dc_common", "dcmdva_bg_acs_2013_2019_demographics_update", dcmdva.bg.demo.final)
+dc_dbWriteTable(con, "dc_common", "ncr_bg_acs_2013_2019_demographics_update", ncr.bg.demo.final)
+dbDisconnect(con)
 ```
 
-# get demographic data at the health district level
+# get demographic data at the health district level, first from ACS
 
 ```{r}
 acs_vars.hd <- function(year, geography)
@@ -746,40 +748,12 @@ health_district$county_id <- as.character(health_district$county_id)
 
 con <- get_db_conn(db_pass = "rsu8zvrsu8zv")
 health_district_geoids <- st_read(con, query = "SELECT * FROM dc_geographies.va_hd_vdh_2021_health_district_geo_names")
-dbDisconnect(con)
+DBI::dbDisconnect(con)
 
 health_district_2 <- left_join(health_district, health_district_geoids, by = c("health_district" = "region_name"))
 ```
 
-pop_white_MOE = pop_whiteM, pop_black_MOE = pop_blackM, pop_native_MOE = pop_nativeM,
-               pop_AAPI_MOE = sqrt(pop_asianM^2 + pop_pacific_islanderM^2), pop_other_MOE = pop_otherM, pop_two_or_more_races_MOE = pop_two_or_more_racesM,
-               pop_hispanic_or_latino_MOE = pop_hispanic_or_latinoM,
-               pop_under_20_MOE = sqrt(sum(male_under_5M^2, male_5_9M^2, male_10_14M^2, male_15_17M^2, male_18_19M^2, female_under_5M^2,
-                                            female_5_9M^2, female_10_14M^2, female_15_17M^2,  female_18_19M^2, na.rm=T)),
-               pop_20_64_MOE = sqrt(sum(male_20M^2, male_21M^2, male_22_24M^2, male_25_29M^2, male_30_34M^2,  male_35_39M^2, male_40_44M^2,
-                                            male_45_49M^2, male_50_54M^2, male_55_59M^2, male_60_61M^2, male_62_64M^2 + female_20M^2 + 
-                                            female_21M^2, female_22_24M^2, female_25_29M^2, female_30_34M^2, female_35_39M^2, female_40_44M^2,
-                                            female_45_49M^2, female_50_54M^2, female_55_59M^2, female_60_61M^2, female_62_64M^2, na.rm=T)),
-               pop_65_plus_MOE = sqrt(sum(male_65_66M^2, male_67_69M^2, male_70_74M^2, male_75_79M^2,
-                                          male_80_84M^2, male_over_85M^2, female_65_66M^2, female_67_69M^2,
-                                          female_70_74M^2, female_75_79M^2, female_80_84M^2, male_over_85M^2, na.rm=T)), num_vet_MOE = num_vetM,
-               hh_limited_english_MOE = sqrt(sum(limited_english_1M^2, limited_english_2M^2,
-                                                 limited_english_3M^2, limited_english_4M^2, na.rm=T))) %>%
-        mutate(perc_under_20_MOE = pop_under_20_MOE / pop_totE, perc_20_64_MOE = pop_20_64_MOE / pop_totE,  perc_65_plus_MOE = pop_65_plus_MOE / pop_totE,
-               perc_white_MOE = pop_white_MOE / pop_race_totE, perc_black_MOE = pop_black_MOE / pop_race_totE,
-               perc_native_MOE = pop_native_MOE / pop_race_totE, perc_AAPI_MOE = pop_AAPI_MOE / pop_race_totE,
-               perc_hispanic_or_latino_MOE = pop_hispanic_or_latino_MOE / pop_eth_totE,
-               perc_other_MOE = pop_other_MOE / pop_race_totE, perc_two_or_more_races_MOE = pop_two_or_more_races_MOE / pop_race_totE,
-               perc_veteran_MOE = sqrt(num_vet_MOE^2 - (perc_veteran * vet_denomM^2)) / vet_denomE,
-               perc_hh_limited_english_MOE = sqrt(hh_limited_english_MOE^2 - (perc_hh_limited_english * total_hhM^2)) / total_hhE) %>%
-        select(GEOID, NAME, year, pop_total, pop_hispanic_or_latino, perc_hispanic_or_latino, pop_white, perc_white, pop_black,
-               perc_black, pop_native, perc_native, pop_AAPI, perc_AAPI, pop_other, perc_other, pop_two_or_more_races, perc_two_or_more_races,
-               pop_under_20, perc_under_20, pop_20_64, perc_20_64, pop_65_plus, perc_65_plus, density, pop_veteran, perc_veteran,
-               hh_limited_english, perc_hh_limited_english, pop_white_MOE, perc_white_MOE, pop_black_MOE, perc_black_MOE, pop_native_MOE,
-               perc_native_MOE, pop_AAPI_MOE, perc_AAPI_MOE, pop_other_MOE, perc_other_MOE, pop_two_or_more_races_MOE,
-               perc_two_or_more_races_MOE, pop_hispanic_or_latino_MOE, perc_hispanic_or_latino_MOE,
-               pop_under_20_MOE, perc_under_20_MOE, pop_20_64_MOE, perc_20_64_MOE, pop_65_plus_MOE, perc_65_plus_MOE,
-               num_vet_MOE, perc_veteran_MOE, hh_limited_english_MOE, perc_hh_limited_english_MOE) %>%
+# get virginia health district data, formatting
 
 ```{r}
 va.ct <- get_acs(geography = "county",
@@ -933,10 +907,9 @@ va.hd.demo <- rbind(va.hd.demo.a, va.hd.demo.b)
 # send to database
 
 ```{r}
-# con <- get_db_conn(db_pass = "rsu8zvrsu8zv")
-# dc_dbWriteTable(con, "dc_common", "va_hd_acs_2009_2019_demographics_update", va.hd.demo)
-# dbDisconnect(con)
+# send va hd data to db
+con <- get_db_conn(db_pass = "rsu8zvrsu8zv")
+dc_dbWriteTable(con, "dc_common", "va_hd_acs_2009_2019_demographics_update", va.hd.demo)
+DBI::dbDisconnect(con)
 ```
-
-
 
