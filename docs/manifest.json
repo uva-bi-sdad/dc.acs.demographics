@@ -1,0 +1,47 @@
+{
+  "name": "dc.acs.demographics",
+  "data": [
+    {
+      "name": "acs_demographics",
+      "variables": ["pop_total", "pop_hispanic_or_latino", "perc_hispanic_or_latino", "pop_white", "perc_white", "pop_black", "perc_black", "pop_native", "perc_native", "pop_AAPI", "perc_AAPI", "pop_other", "perc_other", "pop_two_or_more_races", "perc_two_or_more_races", "pop_under_20", "perc_under_20", "pop_20_64", "perc_20_64", "pop_65_plus", "perc_65_plus", "density", "pop_veteran", "perc_veteran", "hh_limited_english", "perc_hh_limited_english", "pop_white_MOE", "perc_white_MOE", "pop_black_MOE", "perc_black_MOE", "pop_native_MOE", "perc_native_MOE", "pop_AAPI_MOE", "perc_AAPI_MOE", "pop_other_MOE", "perc_other_MOE", "pop_two_or_more_races_MOE", "perc_two_or_more_races_MOE", "pop_hispanic_or_latino_MOE", "perc_hispanic_or_latino_MOE", "pop_under_20_MOE", "perc_under_20_MOE", "pop_20_64_MOE", "perc_20_64_MOE", "pop_65_plus_MOE", "perc_65_plus_MOE", "num_vet_MOE", "perc_veteran_MOE", "hh_limited_english_MOE", "perc_hh_limited_english_MOE", "pop_total_MOE", "density_MOE"],
+      "file": "dcmdva_hdcttrbg_2009_2019_acs_demographics.csv.xz",
+      "size": 40006688,
+      "md5": "b17c37ec6f4a5fe3d1846733869e36d5"
+    },
+    {
+      "name": "acs_demographics",
+      "variables": ["pop_total", "pop_hispanic_or_latino", "perc_hispanic_or_latino", "pop_white", "perc_white", "pop_black", "perc_black", "pop_native", "perc_native", "pop_AAPI", "perc_AAPI", "pop_other", "perc_other", "pop_two_or_more_races", "perc_two_or_more_races", "pop_under_20", "perc_under_20", "pop_20_64", "perc_20_64", "pop_65_plus", "perc_65_plus", "density", "pop_veteran", "perc_veteran", "hh_limited_english", "perc_hh_limited_english", "pop_white_MOE", "perc_white_MOE", "pop_black_MOE", "perc_black_MOE", "pop_native_MOE", "perc_native_MOE", "pop_AAPI_MOE", "perc_AAPI_MOE", "pop_other_MOE", "perc_other_MOE", "pop_two_or_more_races_MOE", "perc_two_or_more_races_MOE", "pop_hispanic_or_latino_MOE", "perc_hispanic_or_latino_MOE", "pop_under_20_MOE", "perc_under_20_MOE", "pop_20_64_MOE", "perc_20_64_MOE", "pop_65_plus_MOE", "perc_65_plus_MOE", "num_vet_MOE", "perc_veteran_MOE", "hh_limited_english_MOE", "perc_hh_limited_english_MOE", "pop_total_MOE", "density_MOE"],
+      "file": "ncr_cttrbg_2009_2019_acs_demographics.csv.xz",
+      "size": 13438328,
+      "md5": "d9a6a5fe9844c4f40878c726882a33e1"
+    },
+    {
+      "name": "acs_demographics",
+      "variables": ["pop_total", "pop_hispanic_or_latino", "pop_white", "perc_hispanic_or_latino", "perc_white", "pop_black", "perc_black", "pop_native", "perc_native", "pop_AAPI", "perc_AAPI", "pop_other", "perc_other", "pop_two_or_more_races", "pop_under_20", "perc_two_or_more_races", "perc_under_20", "pop_20_64", "perc_20_64", "pop_65_plus", "perc_65_plus", "density", "pop_veteran", "perc_veteran", "hh_limited_english", "pop_white_MOE", "perc_hh_limited_english", "perc_white_MOE", "pop_black_MOE", "perc_black_MOE", "pop_native_MOE", "perc_native_MOE", "pop_AAPI_MOE", "perc_AAPI_MOE", "pop_other_MOE", "perc_other_MOE", "pop_two_or_more_races_MOE", "pop_20_64_MOE", "perc_two_or_more_races_MOE", "pop_hispanic_or_latino_MOE", "perc_hispanic_or_latino_MOE", "pop_under_20_MOE", "perc_under_20_MOE", "perc_20_64_MOE", "pop_65_plus_MOE", "num_vet_MOE", "perc_65_plus_MOE", "perc_veteran_MOE", "pop_total_MOE", "hh_limited_english_MOE", "perc_hh_limited_english_MOE", "density_MOE"],
+      "file": "va_hdcttr_2009_2019_acs_demographics.csv.xz",
+      "size": 8885684,
+      "md5": "2a8bbe2762e3865e9a993d6d4bc28eec"
+    }
+  ],
+  "distributions": {
+    "dataverse": {
+      "id": 55831,
+      "doi": "doi:10.18130/V3/4DBCUF",
+      "server": "https://dataverse.lib.virginia.edu/",
+      "data": [
+        {
+          "file": "ncr_cttrbg_2009_2019_acs_demographics.csv.xz",
+          "id": 55954,
+          "size": 13438328,
+          "md5": "d9a6a5fe9844c4f40878c726882a33e1"
+        },
+        {
+          "file": "va_hdcttr_2009_2019_acs_demographics.csv.xz",
+          "id": 55953,
+          "size": 8885684,
+          "md5": "2a8bbe2762e3865e9a993d6d4bc28eec"
+        }
+      ]
+    }
+  }
+}
