@@ -41,7 +41,7 @@ acs_vars <- function(year, geography)
                                       pop_black = "B02001_003", pop_native = "B02001_004",
                                       pop_asian = "B02001_005", pop_pacific_islander = "B02001_006",
                                       pop_other = "B02001_007", pop_two_or_more_races = "B02001_008",
-                                      pop_eth_tot = "B03001_001", pop_hispanic_or_latino = "B03001_003",
+                                      pop_eth_tot = "B03003_001", pop_hispanic_or_latino = "B03003_003",
                                       male_under_5 = "B01001_003", male_5_9 = "B01001_004",
                                       male_10_14 = "B01001_005", male_15_17 = "B01001_006",
                                       male_18_19 = "B01001_007", male_20 = "B01001_008",
@@ -630,8 +630,8 @@ dcmdva.bg.demo.final[grepl("perc", dcmdva.bg.demo.final$measure),]$value <- 100 
 ncr.bg.demo.final[grepl("perc", ncr.bg.demo.final$measure),]$value <- 100 * ncr.bg.demo.final[grepl("perc", ncr.bg.demo.final$measure),]$value
 
 # send to database
-source("~/git/VDH/src/helper_functions.R")
-con <- get_db_conn(db_pass = "rsu8zvrsu8zv")
+source("~/git/vdh/src/helper_functions.R")
+con <- get_db_conn()
 dc_dbWriteTable(con, "dc_common", "dcmdva_ct_acs_2009_2019_demographics_update", dcmdva.ct.demo.final)
 dc_dbWriteTable(con, "dc_common", "ncr_ct_acs_2009_2019_demographics_update", ncr.ct.demo.final)
 dc_dbWriteTable(con, "dc_common", "dcmdva_tr_acs_2009_2019_demographics_update", dcmdva.tr.demo.final)
@@ -655,7 +655,7 @@ acs_vars.hd <- function(year, geography)
                                       pop_black = "B02001_003", pop_native = "B02001_004",
                                       pop_asian = "B02001_005", pop_pacific_islander = "B02001_006",
                                       pop_other = "B02001_007", pop_two_or_more_races = "B02001_008",
-                                      pop_eth_tot = "B03001_001", pop_hispanic_or_latino = "B03001_003",
+                                      pop_eth_tot = "B03003_001", pop_hispanic_or_latino = "B03003_003",
                                       male_under_5 = "B01001_003", male_5_9 = "B01001_004",
                                       male_10_14 = "B01001_005", male_15_17 = "B01001_006",
                                       male_18_19 = "B01001_007", male_20 = "B01001_008",
@@ -746,7 +746,7 @@ va.ct.demographics.2009 <- acs_vars.hd(2009, "county") %>% mutate(year = 2009, G
 health_district <- read.csv("/project/biocomplexity/sdad/projects_data/vdh/va_county_to_hd.csv")
 health_district$county_id <- as.character(health_district$county_id)
 
-con <- get_db_conn(db_pass = "rsu8zvrsu8zv")
+con <- get_db_conn()
 health_district_geoids <- st_read(con, query = "SELECT * FROM dc_geographies.va_hd_vdh_2021_health_district_geo_names")
 DBI::dbDisconnect(con)
 
@@ -908,7 +908,7 @@ va.hd.demo <- rbind(va.hd.demo.a, va.hd.demo.b)
 
 ```{r}
 # send va hd data to db
-con <- get_db_conn(db_pass = "rsu8zvrsu8zv")
+con <- get_db_conn()
 dc_dbWriteTable(con, "dc_common", "va_hd_acs_2009_2019_demographics_update", va.hd.demo)
 DBI::dbDisconnect(con)
 ```
