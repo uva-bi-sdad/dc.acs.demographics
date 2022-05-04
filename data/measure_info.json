@@ -10,6 +10,7 @@
     "long_description": "The Black population percent. Based on American Community Survey ACS 2015/2019 5-year estimates Table B01001.",
     "statement": "The Black population is {value} in {features.name}.",
     "type": "percent",
+    "equity_category" : "Status",
     "sources": [
       {
         "name": "American Community Survey Table B01001",
@@ -29,6 +30,7 @@
     "long_description": "The Native population percent. Based on American Community Survey ACS 2015/2019 5-year estimates Table B01001.",
     "statement": "The Native population is {value} in {features.name}.",
     "type": "percent",
+    "equity_category" : "Status",
     "sources": [
       {
         "name": "American Community Survey Table B01001",
@@ -48,6 +50,7 @@
     "long_description": "The Asian American/Pacific Islander population percent. Based on American Community Survey ACS 2015/2019 5-year estimates Table B01001.",
     "statement": "The Asian American/Pacific Islander population is {value} in {features.name}.",
     "type": "percent",
+    "equity_category" : "Status",
     "sources": [
       {
         "name": "American Community Survey Table B01001",
@@ -67,6 +70,7 @@
     "long_description": "The White population percent. Based on American Community Survey ACS 2015/2019 5-year estimates Table B01001.",
     "statement": "The White population is {value} in {features.name}.",
     "type": "percent",
+    "equity_category" : "Status",
     "sources": [
       {
         "name": "American Community Survey Table B01001",
@@ -86,6 +90,7 @@
     "long_description": "The Hispanic/Latino population percent. Based on American Community Survey ACS 2015/2019 5-year estimates Table B01001.",
     "statement": "The Hispanic/Latino population is {value} in {features.name}.",
     "type": "percent",
+    "equity_category" : "Status",
     "sources": [
       {
         "name": "American Community Survey Table B01001",
@@ -105,6 +110,7 @@
     "long_description": "The Other racial population percent. Based on American Community Survey ACS 2015/2019 5-year estimates Table B01001.",
     "statement": "The Other racial population is {value} in {features.name}.",
     "type": "percent",
+    "equity_category" : "Status",
     "sources": [
       {
         "name": "American Community Survey Table B01001",
@@ -124,6 +130,7 @@
     "long_description": "The two or more races population percent. Based on American Community Survey ACS 2015/2019 5-year estimates Table B01001.",
     "statement": "The two or more races population is {value} in {features.name}.",
     "type": "percent",
+    "equity_category" : "Status",
     "sources": [
       {
         "name": "American Community Survey Table B01001",
@@ -143,6 +150,7 @@
     "long_description": "The percent of the population under age 20. Based on American Community Survey ACS 2015/2019 5-year estimates Table B01001.",
     "statement": "The percent of the population under age 20 is {value} in {features.name}.",
     "type": "percent",
+    "equity_category" : "Status",
     "sources": [
       {
         "name": "American Community Survey Table B01001",
@@ -162,6 +170,7 @@
     "long_description": "The percent of the population between age 20 and 64. Based on American Community Survey ACS 2015/2019 5-year estimates Table B01001.",
     "statement": "The percent of the population between age 20 and 64 is {value} in {features.name}.",
     "type": "percent",
+    "equity_category" : "Status",
     "sources": [
       {
         "name": "American Community Survey Table B01001",
@@ -181,6 +190,7 @@
     "long_description": "The percent of the population over age 64. Based on American Community Survey ACS 2015/2019 5-year estimates Table B01001.",
     "statement": "The percent of the population over age 64 is {value} in {features.name}.",
     "type": "percent",
+    "equity_category" : "Status",
     "sources": [
       {
         "name": "American Community Survey Table B01001",
@@ -200,6 +210,7 @@
     "long_description": "The Veteran population percent. Based on American Community Survey ACS 2015/2019 5-year estimates Table B01001.",
     "statement": "The Veteran population is {value} in {features.name}.",
     "type": "percent",
+    "equity_category" : "Status",
     "sources": [
       {
         "name": "American Community Survey Table B01001",
@@ -219,6 +230,7 @@
     "long_description": "The percent of households with limited English. Based on American Community Survey ACS 2015/2019 5-year estimates Table C16002.",
     "statement": "The percent of households with limited English is {value} in {features.name}.",
     "type": "percent",
+    "equity_category" : "Status",
     "sources": [
       {
         "name": "American Community Survey Table C16002",
