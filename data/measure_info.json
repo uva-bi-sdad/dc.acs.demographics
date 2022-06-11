@@ -99,10 +99,10 @@
       }
     ]
   },
-  "acs_demographics:perc_other": {
+  "demographics:perc_other": {
     "category": "Demographics",
     "measure_table": "ncr_cttrbg_2009_2019_acs_demographics",
-    "full_name": "acs_demographics:perc_other",
+    "full_name": "demographics:perc_other",
     "measure": "perc_other",
     "short_name": "Other racial population",
     "long_name": "Other racial population (percent)",
@@ -179,10 +179,10 @@
       }
     ]
   },
-  "acs_demographics:perc_65_plus": {
+  "demographics:perc_65_plus": {
     "category": "Demographics",
     "measure_table": "ncr_cttrbg_2009_2019_acs_demographics",
-    "full_name": "acs_demographics:perc_65_plus",
+    "full_name": "demographics:perc_65_plus",
     "measure": "perc_65_plus",
     "short_name": "65 plus population",
     "long_name": "65 plus population (percent)",
